@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 01背包 2D解法，2D是1D的基础
+        1、dp[i][j]  dp表示最大价值，i表示前i个物品序列，j表示背包最大重量；
+        2、dp[i][j] = (取物品i)dp[i-1][j-Wi]+Vi (不取物品i)dp[i-1][j]    取max即为dp元素
+        
+            dp[1][0] = 0  dp[1][1] = 0(物品0、1放不下) max(V0,V1)放得下 ===》(取物品1)dp[0][j-W1]+V1 (不取)dp[0][j]
+            dp[0][0] = 0  dp[0][1] = 0(物品0放不下) V0(放得下)
+        3、发现dp[i][j] 取决于dp[i-1]  如果j=0则，直接dp=0,也就说dp与元素取决于上一行左上角的方向，所以第0行初始化
+        4、遍历i 1-物品数, j 0-重量 2个循环
+        5、举例子
+               重量
+                0  1  2  3  4  5
+        物品0   0   
+            1   0     X
+            2   0
+        对于元素x，dp[1][2]= max( dp[0][2] 不取物品1, dp[0][2-W1] 取物品1)
+         */
+
+        function maxValue(things, values, weight) {
+            let dp = [[]]
+            // 边界
+            if (weight === 0) {
+                return 0
+            }
+            // 初始化
+            for (let i = 0; i <= weight; i++) {
+                dp[0][i] = i >= things[0] ? values[0] : 0
+            }
+            // 遍历i 1-物品数， j 1-weight
+            for (let i = 1; i < things.length; i++) {
+                dp[i] = [0]
+                for (let j = 1; j <= weight; j++) {
+                    // 考虑j-things[i] >=0的条件
+                    if (j >= things[i]) {
+                        dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - things[i]] + values[i])  // (不放当前物品，放当前物品)
+                    } else {
+                        // j<things[i]的话即 weight<things[i]，说明当前物品放不下
+                        dp[i][j] = dp[i - 1][j]
+                    }
+                }
+            }
+            let max = dp.map((row, index) => { return row[weight] })
+            //返回weight列下的max
+            return Math.max(...max)
+        }
+        let things = [1, 3, 4];
+        let values = [15, 20, 30];
+        let weight = 4;
+        // console.log(maxValue(things, values, weight)); // 输出: 30
+        let arr = [1, 2, 3, 4, 5];
+        let sum = arr.reduce(function (prev, cur, index, arr) {
+            console.log(prev, cur, index);
+            return prev + cur;
+        }, 0);
+        console.log('arr:', arr, 'sum:', sum);
+    </script>
+
+</body>
+
+</html>

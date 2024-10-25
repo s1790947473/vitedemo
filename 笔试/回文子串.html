@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 包含01且左右对称
+        暴力解法： dp[i][j]表示 i开始，j结束的01子串长度
+          i<j,只用考虑上三角
+        */
+        function isHuiwen(array) {
+            // 包含 01 
+            if (array.includes(1) && array.includes(0)) {
+                let reverseStr = [...array].reverse().join('')
+                if (array.join('') == reverseStr) {
+                    return array.length
+                } else {
+                    return 0
+                }
+            } else {
+                return 0
+            }
+
+
+            // 左右对称
+
+        }
+        function f1(array) {
+            let dp = []
+            let max_len = 0
+            for (let i = 0; i < array.length; i++) {
+                dp[i] = []
+                for (let j = i + 1; j < array.length; j++) {
+                    let subArr = array.slice(i, j + 1)
+                    dp[i][j] = isHuiwen(subArr)
+                    if (dp[i][j] > max_len) {
+                        max_len = dp[i][j]
+                    }
+                }
+            }
+            return max_len
+        }
+        let str = '11010010100'
+        let str1 = '11011'
+        let str2 = [...str1].reverse().join('')
+        // console.log(str1.includes(str2));
+        let array = [1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0]
+        // console.log(f1(array));
+        /* 动态规划法
+        1、确定dp[i][j] 表示i起始，j结束的子串的周期字符串长度
+        2、递推公式， 不对
+         */
+        function longestPalindrome01(array) {
+            const n = array.length;
+            if (n <= 1) return 0;
+
+            let dp = Array.from({ length: n }, () => Array(n).fill(false));
+            let maxLength = 0;
+
+            // 初始化长度为2的子串
+            for (let i = 0; i < n - 1; i++) {
+                if (array[i] !== array[i + 1]) {
+                    dp[i][i + 1] = true;
+                    maxLength = 2;
+                }
+            }
+
+            // 填充动态规划表格，考虑长度大于2的子串
+            for (let len = 3; len <= n; len++) {
+                for (let i = 0; i <= n - len; i++) {
+                    let j = i + len - 1;
+
+                    // 判断 array[i...j] 是否为回文
+                    if (array[i] === array[j] && dp[i + 1][j - 1]) {
+                        dp[i][j] = true;
+                    }
+
+                    // 检查是否包含 0 和 1，且是回文
+                    if (dp[i][j] && array.slice(i, j + 1).includes(0) && array.slice(i, j + 1).includes(1)) {
+                        maxLength = Math.max(maxLength, len);
+                    }
+                }
+            }
+
+            return maxLength;
+        }
+
+        // 示例输入
+        const inputArray = [1, 1, 1, 0, 1, 0, 0, 1, 0, 0];
+        console.log(longestPalindrome01(inputArray)); // 输出: 8
+
+
+    </script>
+</body>
+
+</html>

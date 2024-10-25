@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 矩阵平方数 
+        1、行列运算，就是找到最少次数的行或列，那么就找所有的行、列，总共3行3列
+        2、arr行表示0-2行的最少运算数，arr列表示0-2列需要的最少运算数
+        3、arr中的元素如何计算？  对应行、列元素的平方数-原来值的max
+        */
+        function findP(v) {   // 返回最小平方数
+            let sqrt = Math.sqrt(v)
+            if ((sqrt % 1) !== 0) {      // 是整数
+                sqrt = Math.ceil(sqrt)
+            }
+            let target = sqrt * sqrt
+            return target
+        }
+
+        function f1(array) {
+            let row = []
+            let col = []
+
+            // 遍历行
+            for (let i = 0; i < array.length; i++) {
+                let pingfang_arr = array[i].map((value) => { return findP(value) - value })   // 发现这里可以有写好的找最小平方数的func
+                row[i] = Math.max(...pingfang_arr)
+            }
+            // 遍历列
+            for (let j = 0; j < array.length; j++) {
+                // 去除列向量,找最大次数
+                let pingfang_arr = array.map((value, index) => { return value[j] }).map((value) => { return findP(value) - value })
+                col[j] = Math.max(...pingfang_arr)
+            }
+            return Math.min(Math.min(...row), Math.min(...col))
+        }
+
+        let array = [[4, 2, 4], [7, 9, 5], [4, 1, 6]]
+        console.log(f1(array));
+
+    </script>
+</body>
+
+</html>

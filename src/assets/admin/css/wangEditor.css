@@ -1,0 +1,12 @@
+.wangEditor {
+    width: 1000px;
+    border: 1px solid #ccc
+}
+
+.wangEditor .toolbar {
+    border-bottom: 1px solid #ccc;
+}
+
+.wangEditor .content {
+    height: 300px !important;
+}

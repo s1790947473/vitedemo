@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+
+
+
+        /* 给定数组array与target，找到子数组和>=target，并且子数组长度最小
+        1、滑动窗口的含义，满足sum>=target的子数组、
+        2、起始、结束位置的初始化，起始0，结束：首个sum>=target的结束index
+        3、起始i的移动，找到subArr后，在其中找到长度short的；
+        4、结束j的移动，遍历完一个subArr后，找到下一个subArr
+        5、举例模拟代码过程，很重要
+        还是2个循环，似乎优化了一点点
+        */
+        function shortArr(array, target) {
+            let i = 0
+            let sum = 0
+            let minLen = array.length
+            for (let j = 0; j < array.length; j++) {
+                sum += array[j]
+                // if (sum >= target) {  // 找到子数组后，在内部寻优， // 发现这里不对，子数组寻优时应该持续移动i直到sum<target时，j才会移动
+
+                while (sum >= target) {
+                    len = j - i + 1
+                    minLen = Math.min(len, minLen)
+                    sum -= array[i]
+                    i++
+                }
+                // sum<target，则寻找新的子数组
+
+
+                /* minLen = Math.min(len, minLen)
+                    // 子数组寻优,移动i
+                    do {
+                        sum -= array[i]
+                        i++
+                    } while (sum >= target) */
+                // } else {  // 没找到子数组，移动j
+                //     continue
+                // }
+            }
+            if ((i == 1 && minLen == array.length && sum < target))
+                return 0
+            return minLen
+        }
+        function shortArr2(array, target) {
+            let i = 0
+            let sum = 0
+            let minLen = array.length
+            for (let j = 0; j < array.length; j++) {
+                sum += array[j]
+                if (sum >= target) {  // 找到子数组后，在内部寻优
+                    len = j - i + 1
+                    minLen = Math.min(len, minLen)
+                    // 子数组寻优,移动i
+                    do {
+                        sum -= array[i]
+                        i++
+                    } while (sum >= target)
+                } else {  // 没找到子数组，移动j
+                    continue
+                }
+            }
+            return minLen
+        }
+        // let arr = [2, 3, 1, 2, 4, 3]
+        let arr = [1, 2, 3, 4, 5]
+        let target = 15
+        console.log(shortArr(arr, target));
+
+    </script>
+</body>
+
+</html>

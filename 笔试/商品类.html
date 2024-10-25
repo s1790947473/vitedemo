@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 商品搜索类，可添加商品，后根据前缀（不区分大小写）搜索商品 */
+        class ProductSearch {
+            constructor() {
+                this.product = []
+            }
+
+            set searchList(produc) {
+                this.product.push(produc)
+            }
+            get searchList() {
+                return this.product
+            }
+
+            search(param) {
+                const paramLow = param.toLowerCase()
+
+                let result = this.product.filter((product) => { return product.toLowerCase().startsWith(paramLow) })
+                return result
+            }
+
+        }
+        const search = new ProductSearch();
+        search.searchList = "Apple";
+        search.searchList = "Banana";
+        search.searchList = "apricot";
+        search.searchList = "Orange"
+
+        console.log(search.search("ap"));  // 输出: ['Apple', 'apricot']
+        console.log(search.search("ban"));  // 输出: ['Banana']
+        console.log(search.search("o"));  // 输出: ['Orange']
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 手动实现Promisei能让你更好的理解）
+        1.有一个then（）方法，这个方法的第一个参数是一个函数，该函数将在promise resolved且接收到结果后执行；这个方法的第二个参数也是一个函数，该函数将花
+        promise rejected且接收到error信息后执行
+        2.then（）方法应该能够被链式调用
+        3.有一个catch(O方法，这个方法只处理eror信息
+        示例2:
+        const promise = new MyPromise((resolve,reject)=>
+            setTimeout(（）=>{
+            reject(new Error('failure'));
+            },100):
+        }):
+        promise.catch(reason =>console.log(reason.message)) 
+        示例1:
+        const promise new MyPromise(resolve =>
+        setTimeout(（）=>{
+        
+        resolve('success');
+        },100);
+        });
+        promise.then(value =
+        console.log(value)
+        
+        });
+        /output
+        success */
+        class MyPromise {
+            static PENDING = '待定';
+            static FULLFILLED = '成功';
+            static REJECTED = '失败'
+            constructor(func) {
+                // Promise参数是立即执行函数
+                this.status = MyPromise.PENDING
+                this.result = null
+                // 存储任务队列
+                this.resolveCallback = []
+                this.rejectCallback = []
+                try {
+                    func(this.resolve.bind(this), this.reject.bind(this))
+                } catch (error) {
+                    this.reject(error)
+                }
+
+            }
+
+            resolve(result) {
+                setTimeout(() => {
+                    if (this.status === MyPromise.PENDING) {
+                        this.status = MyPromise.FULLFILLED;
+                        this.result = result
+                        this.resolveCallback.forEach((callback) => {
+                            callback(result)
+                        })
+                    }
+                })
+            }
+            reject(result) {
+                setTimeout(() => {
+                    if (this.status === MyPromise.PENDING) {
+                        this.status = MyPromise.REJECTED;
+                        this.result = result
+                        this.rejectCallback.forEach((callback) => {
+                            callback(result)
+                        })
+                    }
+                })
+
+            }
+            then(onFullfilled, onRejected) {
+                onFullfilled = typeof (onFullfilled) === 'funciton' ? onFullfilled : () => { }
+                onRejected = typeof (onRejected) === 'function' ? onRejected : () => { }
+                if (this.status === MyPromise.PENDING) {
+                    this.resolveCallback.push(onFullfilled)
+                    this.rejectCallback.push(onRejected)
+                }
+
+                if (this.status === MyPromise.FULLFILLED) {
+                    setTimeout(() => {
+                        onFullfilled(this.result)
+                    })
+
+                }
+                if (this.status === MyPromise.REJECTED) {
+                    setTimeout(() => {
+                        onRejected(this.result)
+                    })
+                }
+            }
+
+        }
+
+        console.log('1');
+        let pro = new MyPromise((resolve, reject) => {
+            console.log('2');
+            setTimeout(() => {
+                resolve('111')
+                reject('222')
+                console.log('4');
+            })
+
+        })
+        pro.then(
+            result => { console.log(result); },
+            result => { console.log(result.message); }
+        )
+        console.log('3');
+
+    </script>
+</body>
+
+</html>

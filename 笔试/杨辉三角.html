@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        /* 
+        1、dp[i][j] 表示杨辉三角第i行j列的元素， 
+        2、dp[0][0]=1
+           dp[1][0]=1    dp[1][1]=1
+           dp[2][0]=1    dp[2][1]=dp11+dp10=2  dp22=1
+           dp30 = 1      dp31=dp21+dp20=3   dp32=dp22+dp21=3 dp33=1
+        3、dp初始化00
+        4、遍历从0开始
+        5、
+         */
+        function yanghui(n) {
+            let dp = [[1]]
+            // 边界条件
+            if (n == 1) {
+                return dp
+            }
+            for (let i = 1; i < n; i++) {
+                // 注意要初始化子数组
+                dp[i] = []
+                for (let j = 0; j <= i; j++) {
+                    if (j == 0 || j == i) {
+                        dp[i][j] = 1
+                    } else {
+                        dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
+                    }
+                }
+            }
+            return dp
+        }
+        console.log(yanghui(5));
+    </script>
+</body>
+
+</html>
