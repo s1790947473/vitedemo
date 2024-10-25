@@ -1,1 +1,1 @@
-第2次编辑git.txt文件
+来自clone的git.txt文件
