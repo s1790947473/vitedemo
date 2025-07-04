@@ -29,6 +29,6 @@ new Promise(function (resolve) {
     console.log("8");
 });
 
-// 输出：2 4 7 
+// 输出：2 4 7 5 8
 // 宏：1 
-// 微：5 async2
+// 微：5 return async2 8 3
