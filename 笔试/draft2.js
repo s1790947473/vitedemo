@@ -11,6 +11,7 @@ async function async1() {
 async function async2() {
     return new Promise((resolve) => {
         console.log("4");
+        // console.trace();
         resolve("async2的结果");
     }).then((data) => {
         console.log("5");
@@ -27,3 +28,7 @@ new Promise(function (resolve) {
 }).then(function () {
     console.log("8");
 });
+
+// 输出：2 4 7 
+// 宏：1 
+// 微：5 async2
